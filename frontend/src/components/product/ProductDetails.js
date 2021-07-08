@@ -5,6 +5,7 @@ import { Carousel } from "react-bootstrap";
 
 import { getProductDetails, clearErrors } from "../../actions/productActions";
 import Loader from "../layout/Loader";
+import MetaData from "../layout/MetaData";
 
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const ProductDetails = ({ match }) => {
   );
 
   useEffect(() => {
+    console.log("ProductDetails UseEffect() called");
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -27,6 +29,7 @@ const ProductDetails = ({ match }) => {
         <Loader />
       ) : (
         <Fragment>
+          <MetaData title={product.name} />
           <div className="row f-flex justify-content-around">
             <div className="col-12 col-lg-5 img-fluid" id="product_image">
               <Carousel pause="hover">

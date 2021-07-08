@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Pagination from "react-js-pagination";
 
 import Product from "./product/Product";
 import Loader from "./layout/Loader";
@@ -9,21 +10,29 @@ import { getProducts } from "../actions/productActions";
 
 import { useAlert } from "react-alert";
 
-const Home = () => {
+const Home = ({ match }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { loading, products, error, productsCount } = useSelector(
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { loading, products, error, productsCount, resPerPage } = useSelector(
     (state) => state.products
   );
 
+  const keyword = match.params.keyword;
+
   useEffect(() => {
-    console.log("USE-EFFECT RERUN");
+    console.log("Home UseEffect() called");
     if (error) {
       return alert.error(error);
     }
-    dispatch(getProducts());
-  }, [dispatch, alert, error]);
+    dispatch(getProducts(keyword, currentPage));
+  }, [dispatch, alert, error, keyword, currentPage]);
+
+  const setCurrentPageNumber = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <Fragment>
@@ -42,6 +51,23 @@ const Home = () => {
                 ))}
             </div>
           </section>
+          {resPerPage <= productsCount && (
+            <div className="d-flex justify-content-center mt-5">
+              <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={resPerPage}
+                totalItemsCount={productsCount}
+                onChange={setCurrentPageNumber}
+                nextPageText={"Next"}
+                prevPageText={"Previous"}
+                firstPageText={"First"}
+                lastPageText={"Last"}
+                itemClass="page-item"
+                linkClass="page-link"
+              />
+            </div>
+          )}
+          {/* {resPerPage <= productsCount && products.length > resPerPage && } */}
         </Fragment>
       )}
     </Fragment>
