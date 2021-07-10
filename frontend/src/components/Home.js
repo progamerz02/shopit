@@ -161,15 +161,15 @@ const Home = ({ match }) => {
               )}
             </div>
           </section>
-          {resPerPage <= productsCount && (
+          {resPerPage <= count && (
             <div className="d-flex justify-content-center mt-5">
               <Pagination
                 activePage={currentPage}
                 itemsCountPerPage={resPerPage}
-                totalItemsCount={count}
+                totalItemsCount={productsCount}
                 onChange={setCurrentPageNumber}
                 nextPageText={"Next"}
-                prevPageText={"Previous"}
+                prevPageText={"Prev"}
                 firstPageText={"First"}
                 lastPageText={"Last"}
                 itemClass="page-item"

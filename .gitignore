@@ -75,6 +75,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variables file
+config.env
 .env
 .env.test
 .env.production
@@ -123,3 +124,4 @@ dist
 .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+backend/config/config.env
