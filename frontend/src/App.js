@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
@@ -6,10 +8,19 @@ import Footer from "./components/layout/Footer";
 import Home from "./components/Home";
 import ProductDetails from "./components/product/ProductDetails";
 import Login from "./components/user/Login";
+import Register from "./components/user/Register";
+import Profile from "./components/user/Profile";
+import ProtectedRoute from "./components/route/ProtectedRoute";
+import UpdateProfile from "./components/user/UpdateProfile";
 
-import "./App.css";
+import { loadUser } from "./actions/userActions";
+import store from "./store";
 
 function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -20,6 +31,10 @@ function App() {
           <Route path="/product/:id" component={ProductDetails} exact />
 
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+
+          <ProtectedRoute path="/me" component={Profile} exact />
+          <ProtectedRoute path="/me/update" component={UpdateProfile} exact />
         </Container>
         <Footer />
       </div>
