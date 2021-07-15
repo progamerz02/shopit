@@ -19,6 +19,9 @@ import {
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_FAIL,
+  NEW_PASSWORD_REQUEST,
+  NEW_PASSWORD_SUCCESS,
+  NEW_PASSWORD_FAIL,
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
   CLEAR_ERRORS,
@@ -131,6 +134,7 @@ export const userReducer = (state = {}, action) => {
 
 export const forgotPasswordReducer = (state = {}, action) => {
   switch (action.type) {
+    case NEW_PASSWORD_REQUEST:
     case FORGOT_PASSWORD_REQUEST:
       return {
         ...state,
@@ -145,6 +149,13 @@ export const forgotPasswordReducer = (state = {}, action) => {
         message: action.payload,
       };
 
+    case NEW_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        success: action.payload,
+      };
+
+    case NEW_PASSWORD_FAIL:
     case FORGOT_PASSWORD_FAIL:
       return {
         ...state,
