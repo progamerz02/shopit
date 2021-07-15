@@ -134,11 +134,11 @@ const Register = ({ history }) => {
                     name="avatar"
                     className="custom-file-input"
                     id="customFile"
-                    accept="iamges/*"
+                    accept="image/*"
                     onChange={onChange}
                   />
                   <label className="custom-file-label" htmlFor="customFile">
-                    Choose Avatar
+                    Choose Avatar(maximum file size is 1mb)
                   </label>
                 </div>
               </div>

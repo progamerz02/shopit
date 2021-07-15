@@ -130,7 +130,7 @@ const UpdateProfile = ({ history }) => {
                     onChange={onChange}
                   />
                   <label className="custom-file-label" htmlFor="customFile">
-                    Choose Avatar
+                    Choose Avatar(maximum file size is 1mb)
                   </label>
                 </div>
               </div>
