@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
 import MetaData from "../layout/MetaData";
+import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
 
-const Cart = () => {
+const Cart = ({ history }) => {
   const dispatch = useDispatch();
 
   const { cartItems } = useSelector((state) => state.cart);
@@ -29,13 +29,16 @@ const Cart = () => {
 
     dispatch(addItemToCart(id, newQty));
   };
-  console.log("RERUN CART");
+
+  const checkoutHandler = () => {
+    history.push("/login?redirect=shipping");
+  };
   return (
     <Fragment>
       {cartItems.length === 0 ? (
         <h2 className="mt-5">Your cart is empty</h2>
       ) : (
-        <Fragment>
+        <div className="container container-fluid">
           <MetaData title={"Your cart"} />
           <h2 className="mt-5">
             Your Cart: <b>{cartItems.length} items</b>
@@ -136,13 +139,17 @@ const Cart = () => {
                 </p>
 
                 <hr />
-                <button id="checkout_btn" className="btn btn-primary btn-block">
+                <button
+                  id="checkout_btn"
+                  className="btn btn-primary btn-block"
+                  onClick={checkoutHandler}
+                >
                   Check out
                 </button>
               </div>
             </div>
           </div>
-        </Fragment>
+        </div>
       )}
     </Fragment>
   );
