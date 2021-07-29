@@ -38,7 +38,7 @@ const Cart = ({ history }) => {
       {cartItems.length === 0 ? (
         <h2 className="mt-5">Your cart is empty</h2>
       ) : (
-        <div className="container container-fluid">
+        <Fragment>
           <MetaData title={"Your cart"} />
           <h2 className="mt-5">
             Your Cart: <b>{cartItems.length} items</b>
@@ -149,7 +149,7 @@ const Cart = ({ history }) => {
               </div>
             </div>
           </div>
-        </div>
+        </Fragment>
       )}
     </Fragment>
   );

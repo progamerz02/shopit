@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import MetaData from "../layout/MetaData";
@@ -31,7 +31,7 @@ const ConfirmOrder = ({ history }) => {
   };
 
   return (
-    <div className="container container-fluid">
+    <Fragment className="container container-fluid">
       <MetaData title={"Confirm Order"} />
       <CheckoutSteps shipping confirmOrder />
       <div className="row d-flex justify-content-between">
@@ -111,7 +111,7 @@ const ConfirmOrder = ({ history }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 
