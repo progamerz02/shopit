@@ -32,6 +32,10 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAIL,
   UPDATE_USER_RESET,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
+  DELETE_USER_RESET,
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
   CLEAR_ERRORS,
@@ -101,6 +105,7 @@ export const authReducer = (state = { user: {} }, action) => {
 
 export const userReducer = (state = {}, action) => {
   switch (action.type) {
+    case DELETE_USER_REQUEST:
     case UPDATE_USER_REQUEST:
     case UPDATE_PASSWORD_REQUEST:
     case UPDATE_PROFILE_REQUEST:
@@ -118,6 +123,13 @@ export const userReducer = (state = {}, action) => {
         isUpdated: action.payload,
       };
 
+    case DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: action.payload,
+      };
+
     case UPDATE_USER_RESET:
     case UPDATE_PASSWORD_RESET:
     case UPDATE_PROFILE_RESET:
@@ -126,6 +138,13 @@ export const userReducer = (state = {}, action) => {
         isUpdated: false,
       };
 
+    case DELETE_USER_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+
+    case DELETE_USER_FAIL:
     case UPDATE_USER_FAIL:
     case UPDATE_PASSWORD_FAIL:
     case UPDATE_PROFILE_FAIL:

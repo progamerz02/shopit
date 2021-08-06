@@ -8,13 +8,19 @@ import { MDBDataTable } from "mdbreact";
 import Sidebar from "./Sidebar";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
-import { getAllUsers, clearErrors } from "../../actions/userActions";
+import {
+  getAllUsers,
+  clearErrors,
+  deleteUser,
+} from "../../actions/userActions";
+import { DELETE_USER_RESET } from "../../constants/userConstants";
 
 const UsersList = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
   const { loading, error, users } = useSelector((state) => state.allUsers);
+  const { isDeleted } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -23,7 +29,17 @@ const UsersList = ({ history }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, alert, history]);
+
+    if (isDeleted) {
+      alert.success("User deleted successfully!");
+      history.push("/admin/users");
+      dispatch({ type: DELETE_USER_RESET });
+    }
+  }, [dispatch, error, alert, history, isDeleted]);
+
+  const deleteUserHandler = (id) => {
+    deleteUser(id);
+  };
 
   const setUsers = () => {
     const data = {
@@ -43,7 +59,6 @@ const UsersList = ({ history }) => {
           id: id,
           name,
           email,
-
           admin: (
             <div>
               {role === "admin" ? (
@@ -59,7 +74,10 @@ const UsersList = ({ history }) => {
               <Link to={`user/${id}`} className="btn btn-primary py-1 px-2">
                 <i className="fa fa-pencil"></i>
               </Link>
-              <button className="btn btn-danger py-1 px-2 mx-2">
+              <button
+                className="btn btn-danger py-1 px-2 mx-2"
+                onClick={() => deleteUserHandler(id)}
+              >
                 <i className="fa fa-trash"></i>
               </button>
             </Fragment>
@@ -69,6 +87,7 @@ const UsersList = ({ history }) => {
 
     return data;
   };
+
   return (
     <Fragment>
       <MetaData title="All Users" />

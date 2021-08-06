@@ -47,6 +47,7 @@ import UpdateUser from "./components/admin/UpdateUser";
 
 import { loadUser } from "./actions/userActions";
 import store from "./store";
+import ProductReviews from "./components/admin/ProductReviews";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -133,6 +134,12 @@ function App() {
           admin
           path="/admin/user/:id"
           component={UpdateUser}
+          exact
+        />
+        <ProtectedRoute
+          admin
+          path="/admin/reviews"
+          component={ProductReviews}
           exact
         />
         {!loading && user && user.role !== "admin" && <Footer />}
