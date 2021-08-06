@@ -9,69 +9,72 @@ import Sidebar from "./Sidebar";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import {
-  getAdminProducts,
+  getAllOrders,
+  deleteOrder,
   clearErrors,
-  deleteProduct,
-} from "../../actions/productActions";
-import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
+} from "../../actions/orderActions";
+import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 
-const ProductsList = ({ history }) => {
+const OrdersList = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, products } = useSelector((state) => state.products);
-  const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.product
-  );
+  const { loading, error, orders } = useSelector((state) => state.allOrders);
+  const { isDeleted } = useSelector((state) => state.order);
 
   useEffect(() => {
-    dispatch(getAdminProducts());
+    dispatch(getAllOrders());
 
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
 
-    if (deleteError) {
-      alert.error(deleteError);
-      dispatch(clearErrors());
-    }
-
     if (isDeleted) {
       alert.success("Product deleted successfully!");
-      history.push("/admin/products");
-      dispatch({ type: DELETE_PRODUCT_RESET });
+      history.push("/admin/orders");
+      dispatch({ type: DELETE_ORDER_RESET });
     }
-  }, [dispatch, error, alert, deleteError, isDeleted, history]);
+  }, [dispatch, error, alert, isDeleted, history]);
 
-  const setProducts = () => {
+  const deleteOrderHandler = (id) => {
+    dispatch(deleteOrder(id));
+  };
+
+  const setOrders = () => {
     const data = {
       columns: [
-        { label: "ID", field: "id", sort: "asc" },
-        { label: "Name", field: "name", sort: "asc" },
-        { label: "Price", field: "price", sort: "asc" },
-        { label: "Stock", field: "stock", sort: "asc" },
+        { label: "Order ID", field: "id", sort: "asc" },
+        { label: "Number of Items", field: "numOfItems", sort: "asc" },
+        { label: "Amount", field: "amount", sort: "asc" },
+        { label: "Status", field: "status", sort: "asc" },
         { label: "Actions", field: "actions" },
       ],
       rows: [],
     };
-    products.forEach((product) => {
+    orders.forEach((order) => {
       data.rows.push({
-        id: product._id,
-        name: product.name,
-        price: `$${product.price}`,
-        stock: product.stock,
+        id: order._id,
+        numOfItems: order.orderItems.length,
+        amount: `$${order.totalPrice}`,
+        status:
+          order.orderStatus &&
+          String(order.orderStatus).includes("Delivered") ? (
+            <p style={{ color: "green" }}>{order.orderStatus}</p>
+          ) : (
+            <p style={{ color: "red" }}>{order.orderStatus}</p>
+          ),
         actions: (
           <Fragment>
             <Link
-              to={`product/${product._id}`}
+              to={`order/${order._id}`}
               className="btn btn-primary py-1 px-2"
             >
-              <i className="fa fa-pencil"></i>
+              <i className="fa fa-eye"></i>
             </Link>
             <button
               className="btn btn-danger py-1 px-2 mx-2"
-              onClick={(e) => deleteProductHandler(product._id)}
+              onClick={() => deleteOrderHandler(order._id)}
             >
               <i className="fa fa-trash"></i>
             </button>
@@ -83,25 +86,21 @@ const ProductsList = ({ history }) => {
     return data;
   };
 
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProduct(id));
-  };
-
   return (
     <Fragment>
-      <MetaData title={"All Products"} />
+      <MetaData title="All Orders" />
       <div className="row">
         <div className="col-12 col-md-2">
           <Sidebar />
         </div>
         <div className="col-12 col-md-10">
           <Fragment>
-            <h1 className="my-5">All Products</h1>
+            <h1 className="my-5">All Orders</h1>
             {loading ? (
               <Loader />
             ) : (
               <MDBDataTable
-                data={setProducts()}
+                data={setOrders()}
                 className="px-3"
                 bordered
                 striped
@@ -116,4 +115,4 @@ const ProductsList = ({ history }) => {
   );
 };
 
-export default ProductsList;
+export default OrdersList;

@@ -39,6 +39,11 @@ import OrderDetails from "./components/order/OrderDetails";
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
 import NewProduct from "./components/admin/NewProduct";
+import UpdateProduct from "./components/admin/UpdateProduct";
+import OrdersList from "./components/admin/OrdersList";
+import ProcessOrder from "./components/admin/ProcessOrder";
+import UsersList from "./components/admin/UsersList";
+import UpdateUser from "./components/admin/UpdateUser";
 
 import { loadUser } from "./actions/userActions";
 import store from "./store";
@@ -105,7 +110,32 @@ function App() {
           component={NewProduct}
           exact
         />
-        {!loading && user.role !== "admin" && <Footer />}
+        <ProtectedRoute
+          admin
+          path="/admin/product/:id"
+          component={UpdateProduct}
+          exact
+        />
+        <ProtectedRoute
+          admin
+          path="/admin/orders"
+          component={OrdersList}
+          exact
+        />
+        <ProtectedRoute
+          admin
+          path="/admin/order/:id"
+          component={ProcessOrder}
+          exact
+        />
+        <ProtectedRoute admin path="/admin/users" component={UsersList} exact />
+        <ProtectedRoute
+          admin
+          path="/admin/user/:id"
+          component={UpdateUser}
+          exact
+        />
+        {!loading && user && user.role !== "admin" && <Footer />}
       </div>
     </Router>
   );
